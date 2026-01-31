@@ -1,24 +1,37 @@
+"use client";
 interface ButtonProps {
-  text: string;
+  text?: string;
+  textSize?: "sm" | "lg";
   icon?: React.ElementType;
-  direction?: 'left' | 'right'
+  direction?: "left" | "right";
   onClick?: () => void;
   otherStyles?: string;
 }
 
-export default function Button({ text, otherStyles, icon: Icon, direction }: ButtonProps) {
+export default function Button({
+  text,
+  textSize,
+  otherStyles,
+  icon: Icon,
+  direction,
+  onClick,
+}: ButtonProps) {
+  
   return (
     <button
       className={`
     bg-linear-to-r from-[#F7971E] via-[#FFD200] to-[#F7971E] bg-size-[200%_auto]
     text-center text-[#292929] flex items-center justify-center gap-2.5 transition-all
-    duration-500 hover:bg-top-right py-5 px-3 rounded-xl h-8 cursor-pointer
+    duration-500 hover:bg-top-right rounded-xl  cursor-pointer
     ${otherStyles}
-    ${Icon && direction && direction === 'left' ? 'flex-row-reverse' : ''}
+    ${Icon && direction && direction === "left" ? "flex-row-reverse" : ""}
+    ${Icon && !text ? "w-10 h-10" : "py-5 px-3 h-8"}
+    ${textSize ? (textSize === "sm" ? "text-sm" : "text-lg") : "text-[16px]"}
     `}
+      onClick={onClick}
     >
       {text}
-      {Icon && <Icon/>}
+      {Icon && <Icon />}
     </button>
   );
 }

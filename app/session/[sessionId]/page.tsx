@@ -1,4 +1,6 @@
-import Logo from "@/components/Logo";
+import FilesContainer from "@/components/FilesContainer";
+import UploadForm from "@/components/Forms/UploadForm";
+import Header from "@/components/Layout/Header";
 
 interface SessionPageProps {
   params: Promise<{ sessionId: string }>;
@@ -8,12 +10,13 @@ export default async function SessionPage({ params }: SessionPageProps) {
   const { sessionId } = await params;
 
   return (
-    <main>
+    <div>
+      <Header />
 
-        <h1>Página do ID: {sessionId}</h1>
-
-        <Logo/>
-        
-    </main>
+      <main className="flex min-h-[76vh] p-7.5 gap-5">
+        <UploadForm/>
+        <FilesContainer/>
+      </main>
+    </div>
   );
 }

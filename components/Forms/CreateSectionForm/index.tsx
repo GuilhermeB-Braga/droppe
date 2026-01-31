@@ -5,8 +5,9 @@ import LabelContainer from "@/components/LabelContainer";
 
 export default function CreateSectionForm() {
   return (
-    <form>
+    <form method="GET"  action='/session/askfnao'>
       <LabelContainer htmlFor="name" label="Iniciar uma nova sessão">
+        
         <div className="grid grid-cols-3 gap-5">
           <Input
             name="name"
