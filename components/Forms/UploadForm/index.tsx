@@ -44,7 +44,7 @@ export default function UploadForm() {
 
   return (
     <form
-      action="GET"
+      action="POST"
       onSubmit={handleSubmit(onSubmit)}
       className="
       flex flex-col gap-5 border border-border-custom rounded-custom p-5 md:w-[45%]"
