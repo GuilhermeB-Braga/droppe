@@ -1,7 +1,7 @@
 interface LabelContainerProps {
   label: string;
   htmlFor: string;
-  children: React.ReactElement;
+  children: React.ReactNode;
 }
 
 export default function LabelContainer({
