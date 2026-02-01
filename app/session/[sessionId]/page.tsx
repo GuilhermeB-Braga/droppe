@@ -13,7 +13,7 @@ export default async function SessionPage({ params }: SessionPageProps) {
     <div>
       <Header />
 
-      <main className="flex flex-col md:flex-row min-h-[76vh] p-7.5 gap-5">
+      <main className="flex flex-col md:flex-row min-h-[76vh] p-5 gap-5">
         <UploadForm/>
         <FilesContainer/>
       </main>

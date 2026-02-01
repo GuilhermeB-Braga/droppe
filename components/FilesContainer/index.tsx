@@ -40,14 +40,14 @@ export default function FilesContainer() {
     <div className="flex flex-col gap-5 flex-1">
       <FilesControls />
 
-      <ul className="border border-border-custom rounded-custom p-7.5 grow flex flex-col gap-5 text-sm">
+      <ul className="border border-border-custom rounded-custom p-5 grow flex flex-col gap-5 text-sm">
         {files
           .sort((a, b) => Number(a.downloaded) - Number(b.downloaded))
           .map((file, index) => (
             <li
               key={index}
               className={`
-                flex justify-between items-end border-transparent border-b p-2 cursor-pointer border-b-border-custom
+                flex justify-between items-end p-2 cursor-pointer border-b-border-custom
                 rounded-sm hover:bg-white/20 hover:border-transparent duration-500 ease-in-out
                 ${file.downloaded && "opacity-40"}
                 `}

@@ -47,9 +47,9 @@ export default function UploadForm() {
       action="GET"
       onSubmit={handleSubmit(onSubmit)}
       className="
-      flex flex-col gap-5 border border-border-custom rounded-custom p-10 md:w-[45%]"
+      flex flex-col gap-5 border border-border-custom rounded-custom p-5 md:w-[45%]"
     >
-      <div className="flex gap-5 items-center">
+      <div className="flex flex-col gap-5 items-center">
         <h2>Transferência de Arquivos(s)</h2>
 
         {errors.files && <InputError message={errors.files.message} />}
