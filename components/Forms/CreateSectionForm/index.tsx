@@ -33,13 +33,13 @@ export default function CreateSectionForm() {
   return (
     <form method="GET" onSubmit={handleSubmit(onSubmit)}>
       <LabelContainer htmlFor="name" label="Iniciar uma nova sessão">
-        <div className="grid grid-cols-3 gap-5">
+        <div className="grid md:grid-cols-3 gap-5">
           <Input
             {...register("name")}
             name="name"
             type="text"
             radius="12"
-            otherStyles={`col-span-2`}
+            otherStyles={`md:col-span-2`}
             placeholder="Defina o nome da sessão"
             error={errors.name ? true : false}
           />

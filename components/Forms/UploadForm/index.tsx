@@ -5,7 +5,8 @@ export default function UploadForm() {
   return (
     <form
       action=""
-      className="flex flex-col gap-5 border border-border-custom rounded-custom p-10 w-[45%]"
+      className="
+      flex flex-col gap-5 border border-border-custom rounded-custom p-10 md:w-[45%]"
     >
       <h2>Transferência de Arquivos(s)</h2>
 

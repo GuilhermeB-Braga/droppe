@@ -1,5 +1,4 @@
 "use client";
-import { IoCloudDoneOutline } from "react-icons/io5";
 import {
   MdOutlineFileDownload,
   MdOutlineFileDownloadDone,
@@ -8,11 +7,11 @@ import Button from "../Button";
 
 export default function FilesControls() {
   return (
-    <div className="flex h-fit p-0.5 rounded-xl gap-1">
+    <div className="flex flex-col md:flex-row h-fit md:p-0.5 rounded-xl gap-2.5">
       <div
         className={`
           flex items-center justify-around gap-5 transition-all duration-500
-          py-1 text-sm  rounded-xl border border-border-custom flex-1
+          py-2.5 md:py-1 text-sm  rounded-xl border border-border-custom flex-1
           `}
       >
         <div className="flex items-center gap-1.5">
