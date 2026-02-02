@@ -3,35 +3,44 @@ import { FiPlus } from "react-icons/fi";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import LabelContainer from "@/components/LabelContainer";
-// React Use Form
 import { useForm } from "react-hook-form";
-// ZOD
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   CreateSessionSchema,
   CreateSessionInput,
 } from "@/lib/validations/session";
-import { useRouter } from "next/navigation";
 import InputError from "@/components/InputError";
+import { createSessionAction } from "@/app/_actions/session";
+import { useTransition } from "react";
 
 export default function CreateSectionForm() {
-  const router = useRouter();
+
+  const [isPending, startTransition] = useTransition();
 
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<CreateSessionInput>({
     resolver: zodResolver(CreateSessionSchema),
   });
 
   const onSubmit = (data: CreateSessionInput) => {
-    console.log("Dados validados:", data);
-    router.push(`/session/${data.name}`);
+    startTransition(async () => {
+      const formData: FormData = new FormData();
+      formData.append('name', data.name)
+      const result = await createSessionAction(null, formData);
+
+      if (result?.error) {
+        setError("name", { type: "manual", message: result.error });
+        console.log(result.message)
+      }
+    });
   };
 
   return (
-    <form method="GET" onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <LabelContainer htmlFor="name" label="Iniciar uma nova sessão">
         <div className="grid md:grid-cols-3 gap-5">
           <Input
@@ -42,16 +51,14 @@ export default function CreateSectionForm() {
             otherStyles={`md:col-span-2`}
             placeholder="Defina o nome da sessão"
             error={errors.name ? true : false}
+            disabled={isPending}
           />
 
-          <Button text="Nova Seção" icon={FiPlus} direction="left" />
+          <Button text={isPending? 'Criando...' : 'Nova Seção'} icon={!isPending && FiPlus} direction="left" disabled={isPending}/>
         </div>
       </LabelContainer>
 
-      {errors.name && (
-        <InputError message={errors.name.message} />
-      )}
-      
+      {errors.name && <InputError message={errors.name.message} />}
     </form>
   );
 }
