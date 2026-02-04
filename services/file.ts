@@ -1,9 +1,9 @@
+import prisma from "@/lib/prisma";
 import {
   PutObjectCommand,
   GetObjectCommand,
   S3Client,
 } from "@aws-sdk/client-s3";
-import { prisma } from "@/lib/prisma";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 export default class FileService {
