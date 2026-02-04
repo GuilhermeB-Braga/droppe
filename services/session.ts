@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+import prisma from "@/lib/prisma";
 
 export default class SessionService {
   async create(name: string) {
@@ -39,7 +39,7 @@ export default class SessionService {
       return session;
     } catch (error) {
       console.log("Falha ao encontrar sessão", error);
-      return null
+      return null;
     }
   }
 
@@ -57,10 +57,9 @@ export default class SessionService {
       }
 
       return session;
-
     } catch (error) {
       console.log("Falha ao encontrar sessão", error);
-      return null
+      return null;
     }
   }
 }
