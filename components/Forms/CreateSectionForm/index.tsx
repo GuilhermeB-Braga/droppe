@@ -14,7 +14,6 @@ import { createSessionAction } from "@/app/_actions/session";
 import { useTransition } from "react";
 
 export default function CreateSectionForm() {
-
   const [isPending, startTransition] = useTransition();
 
   const {
@@ -29,12 +28,12 @@ export default function CreateSectionForm() {
   const onSubmit = (data: CreateSessionInput) => {
     startTransition(async () => {
       const formData: FormData = new FormData();
-      formData.append('name', data.name)
+      formData.append("name", data.name);
       const result = await createSessionAction(null, formData);
 
       if (result?.error) {
-        setError("name", { type: "manual", message: result.error });
-        console.log(result.message)
+        setError("name", { type: "validate", message: result.error });
+        console.log(result);
       }
     });
   };
@@ -54,7 +53,12 @@ export default function CreateSectionForm() {
             disabled={isPending}
           />
 
-          <Button text={isPending? 'Criando...' : 'Nova Seção'} icon={!isPending && FiPlus} direction="left" disabled={isPending}/>
+          <Button
+            text={isPending ? "Criando..." : "Nova Seção"}
+            icon={!isPending && FiPlus}
+            direction="left"
+            disabled={isPending}
+          />
         </div>
       </LabelContainer>
 

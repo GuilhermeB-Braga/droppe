@@ -5,20 +5,25 @@ import Logo from "@/components/Logo";
 import SessionData from "@/components/SessionData";
 import QrCode from "@/components/QrCode";
 
+interface HeaderProps {
+  sessionName: string
+  sessionCode: string
+}
+
 interface Data {
   label: string;
   data: string;
 }
 
-export default function Header() {
+export default function Header({sessionName, sessionCode}: HeaderProps) {
   const sessionData: Data[] = [
     {
       label: "Nome da sessão",
-      data: "minha sessão",
+      data: sessionName,
     },
     {
       label: "Código da sessão",
-      data: "R7B806",
+      data: sessionCode,
     },
     {
       label: "Encerra em",

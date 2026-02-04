@@ -11,9 +11,9 @@ export const CreateSessionSchema = z.object({
 export const AccessSectionSchema = z.object({
   name: z
     .string()
+    .trim()
     .min(3, "O nome da sessão deve ter no minímo 3 caracteres")
-    .max(25, "O nome da sessão deve ter no máximo 25 caracteres")
-    .trim(),
+    .max(25, "O nome da sessão deve ter no máximo 25 caracteres"),
     accessCode: z
         .string()
         .trim()

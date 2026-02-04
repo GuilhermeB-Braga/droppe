@@ -19,7 +19,48 @@ export default class SessionService {
 
       return session;
     } catch (error) {
-        console.log('Não foi possível salvar a sessão agora.', error)
+      console.log("Não foi possível salvar a sessão agora.", error);
+    }
+  }
+
+  async login(name: string, code: string) {
+    try {
+      const session = await prisma.session.findUnique({
+        where: {
+          name: name,
+          code: code,
+        },
+      });
+
+      if (!session) {
+        throw new Error("Sessão não encontrada");
+      }
+
+      return session;
+    } catch (error) {
+      console.log("Falha ao encontrar sessão", error);
+      return null
+    }
+  }
+
+  async getSession(sessionId: string) {
+    try {
+      const session = await prisma.session.findUnique({
+        where: { id: sessionId },
+        include: {
+          files: true,
+        },
+      });
+
+      if (!session) {
+        throw new Error("Sessão não encontrada");
+      }
+
+      return session;
+
+    } catch (error) {
+      console.log("Falha ao encontrar sessão", error);
+      return null
     }
   }
 }

@@ -5,35 +5,51 @@ import {
   MdOutlineFileDownload,
   MdOutlineFileDownloadDone,
 } from "react-icons/md";
+import { getDownloadUrlAction } from "@/app/_actions/file";
 
 interface File {
-  filename: string;
+  id: string;
+  createdAt: Date;
+  originalName: string;
+  savedName: string;
+  fileSize: number;
+  key: string;
+  path: string;
+  sessionId: string;
   downloaded: boolean;
 }
 
-export default function FilesContainer() {
-  const [files, setFiles] = useState<File[]>([
-    {
-      filename: "dropfile1.png",
-      downloaded: false,
-    },
-    {
-      filename: "dropfile2.png",
-      downloaded: false,
-    },
-    {
-      filename: "dropfile3.png",
-      downloaded: false,
-    },
-  ]);
+interface FilesContainerProps {
+  files: File[];
+}
 
-  const handleUpdateFiles = (index: number): void => {
-    const updatedFiles = files.map((file, i) => ({
-      ...file,
-      downloaded:
-        index === i ? (file.downloaded ? true : true) : file.downloaded,
-    }));
-    setFiles(updatedFiles);
+export default function FilesContainer({ files }: FilesContainerProps) {
+  const [handleFiles, setHandleFiles] = useState<File[]>(files);
+
+  const handleDownload = async (index: number, file: File) => {
+
+    console.log('Clicado - ', index, file)
+    
+    try {
+      // 2. Chama a Server Action para pegar a URL de forma segura
+      const result = await getDownloadUrlAction(file.key, file.originalName);
+
+      if (result.error || !result.url) {
+        alert("Erro ao gerar link de download");
+        return;
+      }
+
+      // 3. Abre o download em uma nova aba
+      window.open(result.url, "_blank");
+
+      // 4. Atualiza o estado visual de "baixado"
+      const updatedFiles = handleFiles.map((f, i) => 
+        i === index ? { ...f, downloaded: true } : f
+      );
+      setHandleFiles(updatedFiles);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -51,9 +67,9 @@ export default function FilesContainer() {
                 rounded-sm hover:bg-white/20 hover:border-transparent duration-500 ease-in-out
                 ${file.downloaded && "opacity-40"}
                 `}
-              onClick={() => handleUpdateFiles(index)}
+              onClick={() => handleDownload(index, file)}
             >
-              <span>{file.filename}</span>
+              <span>{file.originalName}</span>
 
               {!file.downloaded ? (
                 <MdOutlineFileDownload size={18} />

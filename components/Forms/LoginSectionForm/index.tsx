@@ -10,26 +10,38 @@ import {
 } from "@/lib/validations/session";
 import { zodResolver } from "@hookform/resolvers/zod";
 import InputError from "@/components/InputError";
+import { useTransition } from "react";
+import { loginSessionAction } from "@/app/_actions/session";
 
 export default function LoginSectionForm() {
+  const [isPending, startTransition] = useTransition();
+
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<AccessSectionInput>({
     resolver: zodResolver(AccessSectionSchema),
   });
 
   const onSubmit = (data: AccessSectionInput) => {
-    console.log("Dados V-alidados: ", data);
+    startTransition(async () => {
+      const formData: FormData = new FormData();
+      formData.append("name", data.name);
+      formData.append("code", data.accessCode);
+
+      const result = await loginSessionAction(null, formData);
+
+      if (result?.error) {
+        setError(result.field as 'name', { type: "validate", message: result.error });
+        console.log(result.error);
+      }
+    });
   };
 
   return (
-    <form
-      action="GET"
-      onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col gap-6"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
       <LabelContainer label="Nome da sessão" htmlFor="name">
         <Input
           {...register("name")}
@@ -37,6 +49,7 @@ export default function LoginSectionForm() {
           type="text"
           placeholder="Insira o nome da sessão"
           error={errors.name ? true : false}
+          disabled={isPending}
         />
         {errors.name && <InputError message={errors.name.message} />}
       </LabelContainer>
@@ -48,15 +61,16 @@ export default function LoginSectionForm() {
           type="text"
           placeholder="Código de 6 digitos"
           error={errors.accessCode ? true : false}
+          disabled={isPending}
         />
-        {errors.accessCode && 
+        {errors.accessCode && (
           <InputError message={errors.accessCode.message} />
-        }
+        )}
       </LabelContainer>
 
       <Button
-        text="Acessar sessão existente"
-        icon={FaArrowRight}
+        text={isPending ? "Acessando..." : "Acessar sessão existente"}
+        icon={!isPending && FaArrowRight}
         otherStyles="w-full"
       />
     </form>
