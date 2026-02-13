@@ -6,6 +6,7 @@ const ACCEPTED_TYPES = [
   "image/png",
   "application/pdf",
   "application/zip",
+  "application/svg",
 ];
 
 export const UploadFilesSchema = z.object({

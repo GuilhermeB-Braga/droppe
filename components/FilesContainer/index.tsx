@@ -5,7 +5,9 @@ import {
   MdOutlineFileDownload,
   MdOutlineFileDownloadDone,
 } from "react-icons/md";
-import { getDownloadUrlAction } from "@/app/_actions/file";
+import FileService from "@/services/FileService";
+
+const fileService = new FileService();
 
 interface File {
   id: string;
@@ -27,24 +29,18 @@ export default function FilesContainer({ files }: FilesContainerProps) {
   const [handleFiles, setHandleFiles] = useState<File[]>(files);
 
   const handleDownload = async (index: number, file: File) => {
+    console.log("Clicado - ", index, file);
 
-    console.log('Clicado - ', index, file)
-    
     try {
       // 2. Chama a Server Action para pegar a URL de forma segura
-      const result = await getDownloadUrlAction(file.key, file.originalName);
-
-      if (result.error || !result.url) {
-        alert("Erro ao gerar link de download");
-        return;
-      }
+      const result = await fileService.getDownloadUrl(file.id);
 
       // 3. Abre o download em uma nova aba
-      window.open(result.url, "_blank");
+      window.open(result, "_blank");
 
       // 4. Atualiza o estado visual de "baixado"
-      const updatedFiles = handleFiles.map((f, i) => 
-        i === index ? { ...f, downloaded: true } : f
+      const updatedFiles = handleFiles.map((f, i) =>
+        i === index ? { ...f, downloaded: true } : f,
       );
       setHandleFiles(updatedFiles);
     } catch (error) {
@@ -57,7 +53,7 @@ export default function FilesContainer({ files }: FilesContainerProps) {
       <FilesControls />
 
       <ul className="border border-border-custom rounded-custom p-5 grow flex flex-col gap-5 text-sm">
-        {files
+        {handleFiles
           .sort((a, b) => Number(a.downloaded) - Number(b.downloaded))
           .map((file, index) => (
             <li
@@ -67,7 +63,11 @@ export default function FilesContainer({ files }: FilesContainerProps) {
                 rounded-sm hover:bg-white/20 hover:border-transparent duration-500 ease-in-out
                 ${file.downloaded && "opacity-40"}
                 `}
-              onClick={() => handleDownload(index, file)}
+              onClick={() => {
+                if (!file.downloaded) {
+                  handleDownload(index, file);
+                }
+              }}
             >
               <span>{file.originalName}</span>
 

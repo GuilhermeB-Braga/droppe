@@ -10,16 +10,19 @@ import {
   CreateSessionInput,
 } from "@/lib/validations/session";
 import InputError from "@/components/InputError";
-import { createSessionAction } from "@/app/_actions/session";
 import { useTransition } from "react";
 
+import SessionService from "@/services/SessionService";
+import { useRouter } from "next/navigation";
+const sessionService = new SessionService();
+
 export default function CreateSectionForm() {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
   const {
     register,
     handleSubmit,
-    setError,
     formState: { errors },
   } = useForm<CreateSessionInput>({
     resolver: zodResolver(CreateSessionSchema),
@@ -27,13 +30,12 @@ export default function CreateSectionForm() {
 
   const onSubmit = (data: CreateSessionInput) => {
     startTransition(async () => {
-      const formData: FormData = new FormData();
-      formData.append("name", data.name);
-      const result = await createSessionAction(null, formData);
+      try {
+        const result = await sessionService.createSection(data.name);
 
-      if (result?.error) {
-        setError("name", { type: "validate", message: result.error });
-        console.log(result);
+        return router.push(`/session/${result.id}`);
+      } catch (error) {
+        console.log(error);
       }
     });
   };

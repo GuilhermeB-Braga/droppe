@@ -7,7 +7,15 @@ import { useForm, useWatch } from "react-hook-form";
 import InputError from "@/components/InputError";
 import FilesToSend from "@/components/FilesToSend";
 import { useState, useTransition } from "react";
-import { getUploadUrlAction } from "@/app/_actions/file";
+import FileService from "@/services/FileService";
+
+const fileService = new FileService();
+
+interface FileObject {
+  originalName: string;
+  fileSize: number;
+  sessionId: string;
+}
 
 interface UploadFormProps {
   sessionId: string;
@@ -56,19 +64,16 @@ export default function UploadForm({ sessionId }: UploadFormProps) {
       try {
         const files: File[] = Array.from(data.files);
 
-        files.forEach(async (file) => {
-          const result = await getUploadUrlAction(
-            file.name,
-            file.type,
-            sessionId,
-          );
+        const uploadPromises = files.map(async (file) => {
+          const fileData: FileObject = {
+            originalName: file.name,
+            fileSize: file.size,
+            sessionId: sessionId,
+          };
 
-          if ("error" in result) {
-            setError("files", { message: result.error });
-            return;
-          }
+          const result = await fileService.getPresignedUrl(fileData, file.type);
 
-          const uploadResponse = await fetch(result.uploadUrl, {
+          const uploadResponse = await fetch(result, {
             method: "PUT",
             body: file,
             headers: {
@@ -82,10 +87,11 @@ export default function UploadForm({ sessionId }: UploadFormProps) {
               message: `Erro ao subir arquivo ${file.name}`,
             });
           }
-
-          setSuccessMessage("Arquivos enviados com sucesso :)");
-          reset();
         });
+
+        await Promise.all(uploadPromises);
+        reset();
+        setSuccessMessage("Arquivos enviados com sucesso :)");
       } catch (error) {
         console.log(error);
         setError("files", {

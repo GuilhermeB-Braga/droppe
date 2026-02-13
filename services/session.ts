@@ -3,10 +3,7 @@ import prisma from "@/lib/prisma";
 export default class SessionService {
   async create(name: string) {
     try {
-      const accessCode = Math.random()
-        .toString(36)
-        .substring(2, 8)
-        .toUpperCase();
+      
 
       const session = await prisma.session.create({
         data: {

@@ -11,9 +11,13 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import InputError from "@/components/InputError";
 import { useTransition } from "react";
-import { loginSessionAction } from "@/app/_actions/session";
+import SessionService from "@/services/SessionService";
+import { useRouter } from "next/navigation";
+
+const sessionService = new SessionService();
 
 export default function LoginSectionForm() {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
   const {
@@ -27,15 +31,15 @@ export default function LoginSectionForm() {
 
   const onSubmit = (data: AccessSectionInput) => {
     startTransition(async () => {
-      const formData: FormData = new FormData();
-      formData.append("name", data.name);
-      formData.append("code", data.accessCode);
+      try {
+        const response = await sessionService.loginSection(
+          data.name,
+          data.accessCode,
+        );
 
-      const result = await loginSessionAction(null, formData);
-
-      if (result?.error) {
-        setError(result.field as 'name', { type: "validate", message: result.error });
-        console.log(result.error);
+        return router.push(`/session/${response.id}`);
+      } catch (error) {
+        console.log(error);
       }
     });
   };
