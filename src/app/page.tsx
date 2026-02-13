@@ -1,6 +1,6 @@
-import CreateSectionForm from "@/components/Forms/CreateSectionForm";
-import LoginSectionForm from "@/components/Forms/LoginSectionForm";
-import SVGComponent from "@/components/SVGComponent";
+import CreateSectionForm from "@/src/components/Forms/CreateSectionForm";
+import LoginSectionForm from "@/src/components/Forms/LoginSectionForm";
+import SVGComponent from "@/src/components/SVGComponent";
 
 export default function Home() {
   return (

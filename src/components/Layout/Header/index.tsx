@@ -1,13 +1,13 @@
 "use client";
 import { LuLogOut } from "react-icons/lu";
-import Button from "@/components/Button";
-import Logo from "@/components/Logo";
-import SessionData from "@/components/SessionData";
-import QrCode from "@/components/QrCode";
+import Button from "@/src/components/Button";
+import Logo from "@/src/components/Logo";
+import SessionData from "@/src/components/SessionData";
+import QrCode from "@/src/components/QrCode";
 
 interface HeaderProps {
-  sessionName: string
-  sessionCode: string
+  sessionName: string;
+  sessionCode: string;
 }
 
 interface Data {
@@ -15,7 +15,7 @@ interface Data {
   data: string;
 }
 
-export default function Header({sessionName, sessionCode}: HeaderProps) {
+export default function Header({ sessionName, sessionCode }: HeaderProps) {
   const sessionData: Data[] = [
     {
       label: "Nome da sessão",
@@ -55,11 +55,7 @@ export default function Header({sessionName, sessionCode}: HeaderProps) {
             ))}
           </div>
 
-          <Button
-            textSize="sm"
-            text="Sair da sessão"
-            icon={LuLogOut}
-          />
+          <Button textSize="sm" text="Sair da sessão" icon={LuLogOut} />
         </div>
       </div>
     </header>

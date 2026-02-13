@@ -1,13 +1,16 @@
 "use client";
-import Button from "@/components/Button";
+import Button from "@/src/components/Button";
 import { LuUpload } from "react-icons/lu";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { UploadFilesSchema, UploadsFilesInput } from "@/lib/validations/upload";
+import {
+  UploadFilesSchema,
+  UploadsFilesInput,
+} from "@/src/lib/validations/upload";
 import { useForm, useWatch } from "react-hook-form";
-import InputError from "@/components/InputError";
-import FilesToSend from "@/components/FilesToSend";
+import InputError from "@/src/components/InputError";
+import FilesToSend from "@/src/components/FilesToSend";
 import { useState, useTransition } from "react";
-import FileService from "@/services/FileService";
+import FileService from "@/src/services/FileService";
 
 const fileService = new FileService();
 

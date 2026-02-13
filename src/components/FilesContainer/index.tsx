@@ -5,7 +5,7 @@ import {
   MdOutlineFileDownload,
   MdOutlineFileDownloadDone,
 } from "react-icons/md";
-import FileService from "@/services/FileService";
+import FileService from "@/src/services/FileService";
 
 const fileService = new FileService();
 

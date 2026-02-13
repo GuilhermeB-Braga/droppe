@@ -1,7 +1,7 @@
-import FilesContainer from "@/components/FilesContainer";
-import UploadForm from "@/components/Forms/UploadForm";
-import Header from "@/components/Layout/Header";
-import SessionService from "@/services/SessionService";
+import FilesContainer from "@/src/components/FilesContainer";
+import UploadForm from "@/src/components/Forms/UploadForm";
+import Header from "@/src/components/Layout/Header";
+import SessionService from "@/src/services/SessionService";
 import { notFound } from "next/navigation";
 
 const sessionService = new SessionService();
