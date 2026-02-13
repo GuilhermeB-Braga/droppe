@@ -32,13 +32,8 @@ export default function FilesContainer({ files }: FilesContainerProps) {
     console.log("Clicado - ", index, file);
 
     try {
-      // 2. Chama a Server Action para pegar a URL de forma segura
       const result = await fileService.getDownloadUrl(file.id);
-
-      // 3. Abre o download em uma nova aba
       window.open(result, "_blank");
-
-      // 4. Atualiza o estado visual de "baixado"
       const updatedFiles = handleFiles.map((f, i) =>
         i === index ? { ...f, downloaded: true } : f,
       );
