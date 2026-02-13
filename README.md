@@ -2,7 +2,7 @@
 
 ![Droppe Home Screen](./assets/home.png "Página Inicial")
 
-Interface **moderna e performática** para compartilhamento de arquivos temporários, construída com **Next.js 15**. Este projeto foca em uma **experiência de usuário** fluida, utilizando uploads paralelos e integração direta com Cloud Storage.
+Interface **moderna e performática** para compartilhamento de arquivos temporários, construída com **Next.js 16**. Este projeto foca em uma **experiência de usuário** fluida, utilizando uploads paralelos e integração direta com Cloud Storage.
 
 
 ## Visão Geral
