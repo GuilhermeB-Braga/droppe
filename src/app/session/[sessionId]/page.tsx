@@ -1,6 +1,7 @@
 import FilesContainer from "@/src/components/FilesContainer";
 import UploadForm from "@/src/components/Forms/UploadForm";
 import Header from "@/src/components/Layout/Header";
+import SessionProvider from "@/src/contexts/SessionProvider";
 import SessionService from "@/src/services/SessionService";
 import { notFound } from "next/navigation";
 
@@ -17,28 +18,14 @@ export default async function SessionPage({ params }: SessionPageProps) {
 
   if (!session) return notFound();
 
-  const { id, name, code, files, createdAt } = session;
-
-  const filesArray =
-    files?.map((file) => {
-      return { ...file, downloaded: false };
-    }) || [];
-
-  const stringId = String(id);
-
   return (
-    <div>
-      <Header
-        sessionName={name}
-        sessionCode={code}
-        sessionCreatedAt={createdAt}
-        sessionId={sessionId}
-      />
+    <SessionProvider session={session}>
+      <Header />
 
       <main className="flex flex-col md:flex-row min-h-[76vh] p-5 gap-5">
-        <UploadForm sessionId={stringId} />
-        <FilesContainer files={filesArray} />
+        <UploadForm />
+        <FilesContainer />
       </main>
-    </div>
+    </SessionProvider>
   );
 }

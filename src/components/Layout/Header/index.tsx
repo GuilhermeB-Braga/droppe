@@ -4,52 +4,29 @@ import Button from "@/src/components/Button";
 import Logo from "@/src/components/Logo";
 import SessionData from "@/src/components/SessionData";
 import QrCode from "@/src/components/QrCode";
-import useTimer from "@/src/hooks/useTimer";
-import SessionService from "@/src/services/SessionService";
-import { useRouter } from "next/navigation";
-
-const sessionService = new SessionService();
-
-interface HeaderProps {
-  sessionName: string;
-  sessionCode: string;
-  sessionCreatedAt: string | Date;
-  sessionId: string;
-}
+import { useSession } from "@/src/contexts/SessionProvider";
+import Link from "next/link";
 
 interface Data {
   label: string;
   data: string;
 }
 
-export default function Header({
-  sessionName,
-  sessionCode,
-  sessionCreatedAt,
-  sessionId,
-}: HeaderProps) {
-
-  const router = useRouter()
-  
-  const finishSession = async () => {
-    await sessionService.checkExpiration(sessionId);
-    return router.push('/')
-  };
-
-  const { text } = useTimer(sessionCreatedAt, 1, finishSession);
+export default function Header() {
+  const { name, code, timer } = useSession();
 
   const sessionData: Data[] = [
     {
       label: "Nome da sessão",
-      data: sessionName,
+      data: name,
     },
     {
       label: "Código da sessão",
-      data: sessionCode,
+      data: code,
     },
     {
       label: "Encerra em",
-      data: text,
+      data: timer.text,
     },
   ];
 
@@ -77,7 +54,9 @@ export default function Header({
             ))}
           </div>
 
-          <Button textSize="sm" text="Sair da sessão" icon={LuLogOut} />
+          <Link href="/">
+            <Button textSize="sm" text="Sair da sessão" icon={LuLogOut} />
+          </Link>
         </div>
       </div>
     </header>

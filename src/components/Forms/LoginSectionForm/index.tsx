@@ -32,12 +32,12 @@ export default function LoginSectionForm() {
   const onSubmit = (data: AccessSectionInput) => {
     startTransition(async () => {
       try {
-        const response = await sessionService.loginSection(
+        const sessionId = await sessionService.loginSection(
           data.name,
           data.accessCode,
         );
 
-        return router.push(`/session/${response.id}`);
+        return router.push(`/session/${sessionId}`);
       } catch (error) {
         console.log(error);
       }

@@ -6,6 +6,7 @@ import {
   MdOutlineFileDownloadDone,
 } from "react-icons/md";
 import FileService from "@/src/services/FileService";
+import { useSession } from "@/src/contexts/SessionProvider";
 
 const fileService = new FileService();
 
@@ -18,15 +19,13 @@ interface File {
   key: string;
   path: string;
   sessionId: string;
-  downloaded: boolean;
+  downloaded?: boolean;
 }
 
-interface FilesContainerProps {
-  files: File[];
-}
+export default function FilesContainer() {
+  const { files } = useSession();
 
-export default function FilesContainer({ files }: FilesContainerProps) {
-  const [handleFiles, setHandleFiles] = useState<File[]>(files);
+  const [handleFiles, setHandleFiles] = useState<File[]>(files || []);
 
   const handleDownload = async (index: number, file: File) => {
     console.log("Clicado - ", index, file);

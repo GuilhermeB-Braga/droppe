@@ -31,7 +31,7 @@ export default class SessionService extends Service {
   }
 
   async loginSection(name: string, code: string): Promise<string> {
-    const response = await this.axiosInstance.post("/session", { name, code });
+    const response = await this.axiosInstance.post("/session/login", { name, code });
 
     return response.data;
   }
@@ -43,6 +43,6 @@ export default class SessionService extends Service {
   }
 
   async checkExpiration(sessionId: string){
-
+    return 'Coming Soon'
   }
 }

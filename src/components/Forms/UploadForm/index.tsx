@@ -11,6 +11,7 @@ import InputError from "@/src/components/InputError";
 import FilesToSend from "@/src/components/FilesToSend";
 import { useState, useTransition } from "react";
 import FileService from "@/src/services/FileService";
+import { useSession } from "@/src/contexts/SessionProvider";
 
 const fileService = new FileService();
 
@@ -20,11 +21,9 @@ interface FileObject {
   sessionId: string;
 }
 
-interface UploadFormProps {
-  sessionId: string;
-}
+export default function UploadForm() {
+  const { id } = useSession();
 
-export default function UploadForm({ sessionId }: UploadFormProps) {
   const [isPending, startTransition] = useTransition();
   const [successMessage, setSuccessMessage] = useState("");
 
@@ -71,7 +70,7 @@ export default function UploadForm({ sessionId }: UploadFormProps) {
           const fileData: FileObject = {
             originalName: file.name,
             fileSize: file.size,
-            sessionId: sessionId,
+            sessionId: id,
           };
 
           const result = await fileService.getPresignedUrl(fileData, file.type);
