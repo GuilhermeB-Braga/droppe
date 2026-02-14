@@ -41,4 +41,8 @@ export default class SessionService extends Service {
 
     return response.data;
   }
+
+  async checkExpiration(sessionId: string){
+
+  }
 }

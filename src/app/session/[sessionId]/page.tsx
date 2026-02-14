@@ -17,7 +17,8 @@ export default async function SessionPage({ params }: SessionPageProps) {
 
   if (!session) return notFound();
 
-  const { id, name, code, files } = session;
+  const { id, name, code, files, createdAt } = session;
+
   const filesArray =
     files?.map((file) => {
       return { ...file, downloaded: false };
@@ -27,7 +28,12 @@ export default async function SessionPage({ params }: SessionPageProps) {
 
   return (
     <div>
-      <Header sessionName={name} sessionCode={code} />
+      <Header
+        sessionName={name}
+        sessionCode={code}
+        sessionCreatedAt={createdAt}
+        sessionId={sessionId}
+      />
 
       <main className="flex flex-col md:flex-row min-h-[76vh] p-5 gap-5">
         <UploadForm sessionId={stringId} />

@@ -4,10 +4,17 @@ import Button from "@/src/components/Button";
 import Logo from "@/src/components/Logo";
 import SessionData from "@/src/components/SessionData";
 import QrCode from "@/src/components/QrCode";
+import useTimer from "@/src/hooks/useTimer";
+import SessionService from "@/src/services/SessionService";
+import { useRouter } from "next/navigation";
+
+const sessionService = new SessionService();
 
 interface HeaderProps {
   sessionName: string;
   sessionCode: string;
+  sessionCreatedAt: string | Date;
+  sessionId: string;
 }
 
 interface Data {
@@ -15,7 +22,22 @@ interface Data {
   data: string;
 }
 
-export default function Header({ sessionName, sessionCode }: HeaderProps) {
+export default function Header({
+  sessionName,
+  sessionCode,
+  sessionCreatedAt,
+  sessionId,
+}: HeaderProps) {
+
+  const router = useRouter()
+  
+  const finishSession = async () => {
+    await sessionService.checkExpiration(sessionId);
+    return router.push('/')
+  };
+
+  const { text } = useTimer(sessionCreatedAt, 1, finishSession);
+
   const sessionData: Data[] = [
     {
       label: "Nome da sessão",
@@ -27,7 +49,7 @@ export default function Header({ sessionName, sessionCode }: HeaderProps) {
     },
     {
       label: "Encerra em",
-      data: "11:00",
+      data: text,
     },
   ];
 
