@@ -5,7 +5,7 @@ export default class Service {
 
   constructor() {
     this.axiosInstance = axios.create({
-      baseURL: process.env.BACKEND_BASE_URL || "http://localhost:9090",
+      baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:9090",
     });
   }
 }
