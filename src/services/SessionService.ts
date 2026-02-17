@@ -45,4 +45,5 @@ export default class SessionService extends Service {
   async checkExpiration(sessionId: string){
     return 'Coming Soon'
   }
+
 }
