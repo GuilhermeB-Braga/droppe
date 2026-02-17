@@ -6,6 +6,7 @@ import SessionData from "@/src/components/SessionData";
 import QrCode from "@/src/components/QrCode";
 import { useSession } from "@/src/contexts/SessionProvider";
 import Link from "next/link";
+import Image from "next/image";
 
 interface Data {
   label: string;
@@ -13,7 +14,8 @@ interface Data {
 }
 
 export default function Header() {
-  const { name, code, timer } = useSession();
+  const { id, name, code, timer } = useSession();
+  const imageUrl = `${process.env.NEXT_PUBLIC_API_URL}/session/qrcode?session=${id}`;
 
   const sessionData: Data[] = [
     {
@@ -40,11 +42,16 @@ export default function Header() {
       justify-between md:justify-center gap-5"
       >
         <div className="hidden md:inline-block">
-          <QrCode />
+          <QrCode imageUrl={imageUrl}/>
         </div>
 
-        <div className="md:hidden grid place-items-center w-50 h-50 p-2 bg-neutral-400 rounded-custom">
-          <div className="w-full h-full rounded-custom bg-white"></div>
+        <div className="md:hidden relative w-50 h-50">
+          <Image
+            alt="QR Code para acesso a sessão"
+            width={500} height={500}
+            src={imageUrl} priority
+            className="absolute object-contain rounded-2xl border-5 border-background-dark shadow-lg"
+          />
         </div>
 
         <div className="flex flex-col gap-5 md:contents w-fit">
