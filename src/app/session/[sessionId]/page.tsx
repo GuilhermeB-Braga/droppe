@@ -1,3 +1,4 @@
+import ExpiredModal from "@/src/components/ExpiredModal";
 import FilesContainer from "@/src/components/FilesContainer";
 import UploadForm from "@/src/components/Forms/UploadForm";
 import Header from "@/src/components/Layout/Header";
@@ -21,6 +22,8 @@ export default async function SessionPage({ params }: SessionPageProps) {
   return (
     <SessionProvider session={session}>
       <Header />
+
+      <ExpiredModal />
 
       <main className="flex flex-col md:flex-row min-h-[76vh] p-5 gap-5">
         <UploadForm />

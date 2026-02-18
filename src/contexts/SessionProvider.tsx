@@ -56,14 +56,13 @@ export default function SessionProvider({
   const router = useRouter();
 
   const finishSession = useCallback(async () => {
-    const response = await sessionService.checkExpiration(session.id);
+    try {
+      const response = await sessionService.checkExpiration(session.id);
 
-    if (response === 'apagado') {
+    } catch (error) {
+      console.error("Erro ao verificar expiração da sessão:", error);
       return router.push("/");
     }
-
-    return null
-    
   }, [session.id, router]);
 
   const { minutes, seconds, text, loading, finished } = useTimer(
