@@ -67,7 +67,7 @@ export default function SessionProvider({
 
   const { minutes, seconds, text, loading, finished } = useTimer(
     session.createdAt,
-    .1,
+    15,
     finishSession,
   );
 
