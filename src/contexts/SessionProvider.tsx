@@ -59,7 +59,6 @@ export default function SessionProvider({
     try {
       const response = await sessionService.checkExpiration(session.id);
 
-      return router.push("/");
     } catch (error) {
       console.error("Erro ao verificar expiração da sessão:", error);
       return router.push("/");
@@ -68,7 +67,7 @@ export default function SessionProvider({
 
   const { minutes, seconds, text, loading, finished } = useTimer(
     session.createdAt,
-    0.1,
+    .1,
     finishSession,
   );
 
