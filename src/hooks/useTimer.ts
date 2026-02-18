@@ -1,14 +1,20 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export default function useTimer(
   initialDate: Date | string,
   minutesTime = 15,
-  onExpire: () => unknown,
+  onExpire?: () => unknown,
 ) {
   const [remainingTime, setRemainingTime] = useState(0);
   const [notified, setNotified] = useState(false);
+
+  const onExpireRef = useRef(onExpire);
+
+  useEffect(() => {
+    onExpireRef.current = onExpire;
+  }, [onExpire]);
 
   const startTime =
     initialDate instanceof Date
@@ -24,10 +30,13 @@ export default function useTimer(
     const calculate = () => {
       const now = Date.now();
       const diff = targetDate - now;
-      setRemainingTime(Math.max(0, diff));
-      if (remainingTime <= 0 && !notified && onExpire) {
+      const newRemainingTime = Math.max(0, diff);
+
+      setRemainingTime(newRemainingTime);
+
+      if (newRemainingTime <= 0 && !notified) {
         setNotified(true);
-        onExpire();
+        onExpireRef.current?.();
       }
     };
 
@@ -35,7 +44,7 @@ export default function useTimer(
     const intervalId = setInterval(calculate, 1000);
 
     return () => clearInterval(intervalId);
-  }, [startTime, notified, onExpire]);
+  }, [startTime, notified, minutesTime, initialDate]);
 
   const minutes = Math.floor((remainingTime / 60000) % 60);
   const seconds = Math.floor((remainingTime / 1000) % 60);
